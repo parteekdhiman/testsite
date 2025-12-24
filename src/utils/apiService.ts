@@ -3,10 +3,8 @@
  * Location: src/services/api.ts
  */
 
-// Base URL for API requests
-const API_BASE_URL = import.meta.env.DEV 
-  ? 'https://newusbackend.vercel.app'  // Development: direct backend URL
-  : import.meta.env.VITE_API_URL || '';  // Production: use env variable
+// Base URL for API requests — set `VITE_API_URL` to your backend root (e.g. https://api.example.com)
+const API_BASE_URL = import.meta.env.VITE_API_URL || '';
 
 /**
  * Generic API request function with error handling
