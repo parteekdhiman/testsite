@@ -115,8 +115,9 @@ const ViewCourse = () => {
         course: course.name,
         brochureUrl: course.brochure,
       });
+      console.log('submitCourseInquiry response:', data);
 
-      if (data.ok) {
+      if (data && data.ok) {
         toast({
           title: "Success! 🎉",
           description:
@@ -126,18 +127,41 @@ const ViewCourse = () => {
         // Download the brochure if URL is provided
         if (data.brochureUrl || course.brochure) {
           const brochureLink = data.brochureUrl || course.brochure;
-          const a = document.createElement("a");
-          a.href = brochureLink;
-          a.download = `${course.name}-brochure.pdf`;
-          a.target = "_blank";
-          document.body.appendChild(a);
-          a.click();
-          document.body.removeChild(a);
+          try {
+            const urlObj = new URL(brochureLink);
+            const sameOrigin = urlObj.origin === window.location.origin;
+
+            const a = document.createElement("a");
+            a.href = brochureLink;
+            a.target = "_blank";
+            a.rel = "noopener noreferrer";
+
+            // Only set download attribute for same-origin URLs (browsers restrict cross-origin downloads)
+            if (sameOrigin) {
+              a.download = `${course.name}-brochure.pdf`;
+            }
+
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+          } catch (err) {
+            console.error('Brochure download error:', err);
+            // fallback: open in new tab
+            window.open(data.brochureUrl || course.brochure, '_blank', 'noopener');
+          }
         }
 
         // Reset form and close modal
         setFormData({ name: "", email: "", phone: "" });
         setShowBrochureForm(false);
+      } else {
+        // Ensure user sees an error if backend responded but `ok` is falsy
+        toast({
+          title: "Download Failed",
+          description: "Unable to retrieve brochure link. Please try again later.",
+          variant: "destructive",
+        });
+        console.warn('submitCourseInquiry returned no ok flag or failed', data);
       }
     } catch (error) {
       console.error("Inquiry submission error:", error);

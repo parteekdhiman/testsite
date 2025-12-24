@@ -28,13 +28,29 @@ const apiRequest = async (
       ...options,
     });
 
-    const data = await response.json();
+    const contentType = response.headers.get('content-type') || '';
+    let data: any = null;
+
+    if (contentType.includes('application/json')) {
+      data = await response.json();
+    } else {
+      // fallback: read as text for non-JSON responses
+      const text = await response.text();
+      data = text;
+    }
 
     if (!response.ok) {
-      throw new Error(
-        data.error || 
-        `HTTP ${response.status}: ${response.statusText}`
-      );
+      // Try to extract useful error message
+      const errMsg =
+        (data && data.error) ||
+        (typeof data === 'string' ? data : null) ||
+        `HTTP ${response.status}: ${response.statusText}`;
+      throw new Error(errMsg);
+    }
+
+    // Normalize non-JSON successful responses into an object
+    if (typeof data === 'string') {
+      return { ok: true, text: data };
     }
 
     return data;
