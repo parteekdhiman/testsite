@@ -1,0 +1,289 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap");
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+.html {
+  color: #f75421;
+}
+.css {
+  color: #006cb4;
+}
+.javascript {
+  color: #f7d800;
+}
+.jQuery {
+  color: #2962ff;
+}
+.react {
+  color: #5ed3f4;
+}
+.Angular {
+  color: #d61a15;
+}
+.php {
+  color: #7377ad;
+}
+.nodejs {
+  color: #7fc728;
+}
+.mysql {
+  color: #5e7580;
+}
+.mongodb {
+  color: #4da53f;
+}
+.wordpress {
+  color: #007298;
+}
+.laravel {
+  color: #f72c1f;
+}
+.django {
+  color: #092d1e;
+}
+.paint {
+  color: rgb(78, 125, 156);
+}
+.vfx {
+  color: rgb(0, 255, 255);
+}
+.texturing {
+  color: rgb(255, 153, 0);
+}
+.audio-mixing {
+  color: rgb(0, 255, 170);
+}
+.graphic-dig {
+  color: rgb(0, 255, 0);
+}
+.graphic-off {
+  color: rgb(0, 47, 255);
+}
+/* Performance optimizations */
+* {
+  @apply box-border;
+}
+
+html {
+  scroll-behavior: smooth;
+  font-feature-settings: "rlig" 1, "calt" 1;
+}
+
+/* Optimize animations for better performance */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Image optimization */
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Font loading optimization */
+body {
+  font-feature-settings: "kern" 1;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+@layer base {
+  :root {
+    --background: 240 20% 8%;
+    --foreground: 0 0% 98%;
+
+    --card: 240 20% 12%;
+    --card-foreground: 0 0% 98%;
+
+    --popover: 240 20% 10%;
+    --popover-foreground: 0 0% 98%;
+
+    --primary: 262 83% 58%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 240 20% 18%;
+    --secondary-foreground: 0 0% 98%;
+
+    --muted: 240 15% 25%;
+    --muted-foreground: 240 10% 70%;
+
+    --accent: 190 95% 50%;
+    --accent-foreground: 240 20% 8%;
+
+    --destructive: 0 72% 50%;
+    --destructive-foreground: 0 85% 97%;
+
+    --border: 240 15% 20%;
+    --input: 240 15% 20%;
+    --ring: 262 83% 58%;
+
+    --radius: 0.75rem;
+
+    --sidebar-background: 240 20% 10%;
+    --sidebar-foreground: 0 0% 98%;
+    --sidebar-primary: 262 83% 58%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 190 95% 50%;
+    --sidebar-accent-foreground: 240 20% 8%;
+    --sidebar-border: 240 15% 20%;
+    --sidebar-ring: 262 83% 58%;
+
+    --chart-1: 262 83% 58%;
+    --chart-2: 190 95% 50%;
+    --chart-3: 330 85% 60%;
+    --chart-4: 47 95% 55%;
+    --chart-5: 150 80% 50%;
+
+    --gradient-primary: linear-gradient(135deg, hsl(262, 83%, 58%) 0%, hsl(330, 85%, 60%) 100%);
+    --gradient-secondary: linear-gradient(135deg, hsl(190, 95%, 50%) 0%, hsl(262, 83%, 58%) 100%);
+    --gradient-accent: linear-gradient(135deg, hsl(47, 95%, 55%) 0%, hsl(20, 90%, 55%) 100%);
+    --gradient-card: linear-gradient(145deg, hsl(240, 20%, 14%) 0%, hsl(240, 20%, 10%) 100%);
+    --gradient-hero: linear-gradient(135deg, hsl(240, 30%, 12%) 0%, hsl(262, 40%, 15%) 50%, hsl(240, 25%, 10%) 100%);
+
+    --font-sans: 'Inter', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    --font-display: 'Space Grotesk', ui-sans-serif, system-ui, sans-serif;
+
+    --shadow-glow: 0 0 40px hsl(262, 83%, 58%, 0.3);
+    --shadow-glow-accent: 0 0 30px hsl(190, 95%, 50%, 0.3);
+  }
+
+  .dark {
+    --background: 240 20% 8%;
+    --foreground: 0 0% 98%;
+    --card: 240 20% 12%;
+    --card-foreground: 0 0% 98%;
+    --popover: 240 20% 10%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 262 83% 58%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 240 20% 18%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 240 15% 25%;
+    --muted-foreground: 240 10% 70%;
+    --accent: 190 95% 50%;
+    --accent-foreground: 240 20% 8%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 85% 97%;
+    --border: 240 15% 20%;
+    --input: 240 15% 20%;
+    --ring: 262 83% 58%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+  }
+
+  h1, h2, h3, h4 {
+    font-family: var(--font-display);
+  }
+}
+
+@layer utilities {
+  .gradient-text {
+    @apply bg-clip-text text-transparent;
+    background-image: var(--gradient-primary);
+  }
+
+  .gradient-text-accent {
+    @apply bg-clip-text text-transparent;
+    background-image: var(--gradient-secondary);
+  }
+
+  .gradient-border {
+    position: relative;
+    background: hsl(var(--card));
+    border-radius: var(--radius);
+  }
+
+  .gradient-border::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    padding: 1px;
+    border-radius: inherit;
+    background: var(--gradient-primary);
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+  }
+
+  .glow-primary {
+    box-shadow: var(--shadow-glow);
+  }
+
+  .glow-accent {
+    box-shadow: var(--shadow-glow-accent);
+  }
+
+  .glass {
+    @apply bg-card/50 backdrop-blur-xl border border-border/50;
+  }
+
+  .tech-badge {
+    @apply inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-sm font-medium;
+    @apply bg-secondary/50 border border-border/50 backdrop-blur-sm;
+  }
+}
+
+@layer components {
+  .animate-float {
+    animation: float 6s ease-in-out infinite;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-20px); }
+  }
+
+  .animate-pulse-glow {
+    animation: pulse-glow 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse-glow {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.7; }
+  }
+
+  .animate-gradient {
+    background-size: 200% 200%;
+    animation: gradient-shift 8s ease infinite;
+  }
+
+  @keyframes gradient-shift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+}
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fade-in 0.5s ease-out forwards;
+  opacity: 0;
+}
