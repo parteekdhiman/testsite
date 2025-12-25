@@ -117,19 +117,12 @@ const CourseCard = ({ course, featured = false, id = 0 }: CourseCardProps) => {
             <Button
               variant="outline"
               size="sm"
-              className="w-full flex items-center justify-center border-border/50 hover:bg-secondary/50"
+              className="w-full flex items-center justify-center bg-gradient-to-r from-primary to-pink-500 hover:opacity-90"
             >
               View course
               <ArrowRight className="ml-1 w-4 h-4" />
             </Button>
           </Link>
-          <Button 
-            size="sm" 
-            className="flex-1 bg-gradient-to-r from-primary to-pink-500 hover:opacity-90"
-            onClick={handleCourseInquiry}
-          >
-            Enquire
-          </Button>
         </div>
       </div>
     </div>

@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { GraduationCap, Facebook, Instagram, Linkedin, Twitter, Youtube, MapPin, Phone, Mail } from "lucide-react";
+import { Facebook, Instagram, Linkedin, Twitter, Youtube, MapPin, Phone, Mail } from "lucide-react";
 
 const Footer = () => {
   const quickLinks = [
@@ -32,9 +32,11 @@ const Footer = () => {
           {/* Brand */}
           <div>
             <Link to="/" className="flex items-center gap-3 mb-4">
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary to-pink-500 flex items-center justify-center">
-                <GraduationCap className="w-6 h-6 text-white" />
-              </div>
+              <img 
+                src="/newus-logo.png" 
+                alt="Newus Logo" 
+                className="w-10 h-10 object-contain"
+              />
               <span className="font-display text-xl font-bold">Newus Dharamshala</span>
             </Link>
             <p className="text-muted-foreground text-sm mb-6 leading-relaxed">
