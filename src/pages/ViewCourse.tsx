@@ -23,6 +23,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { submitCourseInquiry } from "@/utils/apiService";
+import { log } from "console";
 
 // Icon mapping for skills
 const skillIconMap: Record<string, React.ReactNode> = {
@@ -113,26 +114,23 @@ const ViewCourse = () => {
         email: formData.email,
         phone: formData.phone,
         course: course.name,
-        brochureUrl: course.brochure,
       });
       console.log('submitCourseInquiry response:', data);
-
       if (data && data.ok) {
         toast({
-          title: "Success! 🎉",
+          title: "Thank You! 🎉",
           description:
-            "Check your email for the brochure link. We'll be in touch soon!",
+            "Your brochure is ready for download.",
         });
 
-        // Download the brochure if URL is provided
-        if (data.brochureUrl || course.brochure) {
-          const brochureLink = data.brochureUrl || course.brochure;
+        // Download the brochure directly on client browser if URL is provided
+        if (course.brochure) {
           try {
-            const urlObj = new URL(brochureLink);
+            const urlObj = new URL(course.brochure);
             const sameOrigin = urlObj.origin === window.location.origin;
 
             const a = document.createElement("a");
-            a.href = brochureLink;
+            a.href = course.brochure;
             a.target = "_blank";
             a.rel = "noopener noreferrer";
 
@@ -147,7 +145,7 @@ const ViewCourse = () => {
           } catch (err) {
             console.error('Brochure download error:', err);
             // fallback: open in new tab
-            window.open(data.brochureUrl || course.brochure, '_blank', 'noopener');
+            window.open(course.brochure, '_blank', 'noopener');
           }
         }
 
@@ -158,7 +156,7 @@ const ViewCourse = () => {
         // Ensure user sees an error if backend responded but `ok` is falsy
         toast({
           title: "Download Failed",
-          description: "Unable to retrieve brochure link. Please try again later.",
+          description: "Unable to process your request. Please try again later.",
           variant: "destructive",
         });
         console.warn('submitCourseInquiry returned no ok flag or failed', data);
@@ -177,6 +175,7 @@ const ViewCourse = () => {
       setIsSubmitting(false);
     }
   };
+  console.log(course.brochure)
 
   // Recommendations: prefer same `type`, then same `coursetype`, exclude current
   const getRecommendations = (currentCourse: typeof course, max = 4) => {

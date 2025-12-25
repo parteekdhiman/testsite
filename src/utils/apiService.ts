@@ -98,7 +98,6 @@ export const submitCourseInquiry = async (data: {
   email: string;
   phone: string;
   course: string;
-  brochureUrl?: string;
 }) => {
   return apiRequest('/course-inquiry', {
     method: 'POST',
