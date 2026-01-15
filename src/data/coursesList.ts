@@ -234,7 +234,7 @@ export const coursesList: Course[] = [
     description: `This one-year diploma program provides a comprehensive and industry-aligned education in Artificial Intelligence and Data Science. Students will build a strong foundation in Python, statistics, data analysis, and computer science, then progress into machine learning, deep learning, NLP, computer vision, and generative AI. The program emphasizes hands-on learning through real-world datasets, projects, and modern AI tools, preparing learners to build intelligent, data-driven applications.`,
     outcome: `By the end of the program, students will be able to collect, clean, analyze, and visualize data; build and deploy machine learning and deep learning models; and apply advanced AI techniques such as NLP, computer vision, and generative AI in real-world projects. Graduates will be prepared for roles such as Data Scientist, AI Engineer, Machine Learning Engineer, Data Analyst, Business Intelligence Professional, and Research Associate.`,
     duration: "1 Year / 480 Hours",
-    image: "https://newus.in/images/courese/AI-Data-Science-Diploma.png",
+    image: "https://newus.in/images/courese/AI-Data-Science-Diploma.jpg",
     tools: [
       { type: "Python", img: python },
       { type: "NumPy", img: numpy },

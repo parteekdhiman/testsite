@@ -3,22 +3,211 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Newus Dharamshala - 26 Years of IT Education Excellence</title>
-    <meta name="description" content="Newus Dharamshala - Premier IT education institute in Himachal Pradesh with 26 years of excellence. Join 74,000+ successful alumni. Courses in Full Stack Development, Data Science, Digital Marketing & more." />
+    <title id="page-title">Newus Dharamshala - IT Education Excellence</title>
+    <script>
+      // Calculate years of experience dynamically
+      const foundingYear = 1998;
+      const currentYear = new Date().getFullYear();
+      const yearsOfExperience = currentYear - foundingYear;
+      
+      // Update title dynamically
+      document.addEventListener('DOMContentLoaded', function() {
+        document.getElementById('page-title').textContent = `Newus Dharamshala - ${yearsOfExperience} Years of IT Education Excellence`;
+        document.querySelector('meta[property="og:title"]').setAttribute('content', `Newus Dharamshala - ${yearsOfExperience} Years of IT Education Excellence`);
+      });
+    </script>
+    <meta name="description" content="Newus Dharamshala - Premier IT education institute in Himachal Pradesh with 28 years of excellence. Join 74,000+ successful alumni. Industry-ready courses in Full Stack Development, Data Science, Digital Marketing, Python, Java & more. Career training for freshers. Government-recognized certifications." />
     <meta name="author" content="Newus Dharamshala" />
-    <meta name="keywords" content="IT education, Dharamshala, computer courses, full stack development, data science, digital marketing, NIIT, programming courses, Himachal Pradesh" />
-
-    <meta property="og:title" content="Newus Dharamshala - 26 Years of IT Education Excellence" />
-    <meta property="og:description" content="Transform your future with Newus Dharamshala. Premier IT education institute with 74,000+ successful alumni." />
+    <meta name="keywords" content="IT education, Dharamshala, computer courses, full stack development, data science, digital marketing, NIIT, programming courses, Himachal Pradesh, career growth, job ready skills, industry ready, skill based learning, IT careers, career training, freshers careers, upskill India" />
+    <link rel="shortcut icon" href="/newus-logo.png" type="image/x-icon">
+    
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="Newus Dharamshala - 28 Years of IT Education Excellence" />
+    <meta property="og:description" content="Transform your future with Newus Dharamshala. Premier IT education institute with 74,000+ successful alumni. Industry-ready training in Full Stack Development, Data Science, Digital Marketing & more." />
     <meta property="og:type" content="website" />
-    <meta property="og:image" content="https://lovable.dev/opengraph-image-p98pqg.png" />
+    <meta property="og:image" content="/newus-logo.png" />
+    <meta property="og:url" content="https://newus.in" />
 
+    <!-- Twitter Card Meta Tags -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Newus Dharamshala - IT Education Excellence" />
-    <meta name="twitter:description" content="Transform your future with Newus Dharamshala. 26 years of excellence in IT education." />
-    <meta name="twitter:image" content="https://lovable.dev/opengraph-image-p98pqg.png" />
+    <meta name="twitter:description" content="Transform your future with Newus Dharamshala. 28 years of excellence in IT education. Industry-ready training for career growth." />
+    <meta name="twitter:image" content="/newus-logo.png" />
 
     <link rel="canonical" href="https://newus.in" />
+    
+    <!-- Additional SEO meta tags -->
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+    <meta name="googlebot" content="index, follow" />
+    <meta name="language" content="English" />
+    <meta name="revisit-after" content="7 days" />
+    <meta name="rating" content="general" />
+    <meta name="distribution" content="global" />
+    <meta name="geo.region" content="IN-HP" />
+    <meta name="geo.placename" content="Dharamshala" />
+    <meta name="geo.position" content="32.2190;76.3234" />
+    <meta name="ICBM" content="32.2190, 76.3234" />
+    
+    <!-- Schema.org structured data - Educational Organization -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "EducationalOrganization",
+      "name": "Newus Dharamshala",
+      "alternateName": "NIIT Dharamshala",
+      "description": "Premier IT education institute in Dharamshala, Himachal Pradesh with 28 years of excellence in computer education and professional training.",
+      "url": "https://newus.in",
+      "logo": "https://newus.in/newus-logo.png",
+      "image": "https://newus.in/newus-logo.png",
+      "foundingDate": "1998",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Dharamshala",
+        "addressRegion": "Himachal Pradesh",
+        "addressCountry": "IN"
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": "32.2190",
+        "longitude": "76.3234"
+      },
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "contactType": "Admissions",
+        "areaServed": "IN",
+        "availableLanguage": ["English", "Hindi"]
+      },
+      "sameAs": [
+        "https://www.facebook.com/newusdharamshala",
+        "https://www.instagram.com/newusdharamshala"
+      ],
+      "numberOfStudents": "74000",
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "4.8",
+        "reviewCount": "1200"
+      },
+      "courseOffered": [
+        {
+          "@type": "Course",
+          "name": "Full Stack Development",
+          "description": "Comprehensive training in modern web development technologies",
+          "provider": {
+            "@type": "EducationalOrganization",
+            "name": "Newus Dharamshala"
+          }
+        },
+        {
+          "@type": "Course",
+          "name": "Data Science",
+          "description": "Master data analytics, machine learning, and AI technologies",
+          "provider": {
+            "@type": "EducationalOrganization",
+            "name": "Newus Dharamshala"
+          }
+        },
+        {
+          "@type": "Course",
+          "name": "Digital Marketing",
+          "description": "Learn SEO, social media marketing, and digital advertising strategies",
+          "provider": {
+            "@type": "EducationalOrganization",
+            "name": "Newus Dharamshala"
+          }
+        }
+      ]
+    }
+    </script>
+    
+    <!-- Local Business Schema -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "LocalBusiness",
+      "name": "Newus Dharamshala",
+      "image": "https://newus.in/newus-logo.png",
+      "url": "https://newus.in",
+      "telephone": "+91-8679686796",
+      "priceRange": "₹₹",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Dharamshala",
+        "addressRegion": "Himachal Pradesh",
+        "postalCode": "176215",
+        "addressCountry": "IN"
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": "32.2190",
+        "longitude": "76.3234"
+      },
+      "openingHoursSpecification": {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": [
+          "Monday",
+          "Tuesday",
+          "Wednesday",
+          "Thursday",
+          "Friday",
+          "Saturday"
+        ],
+        "opens": "09:00",
+        "closes": "05:00"
+      }
+    }
+    </script>
+    
+    <!-- BreadcrumbList Schema -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://newus.in"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Courses",
+          "item": "https://newus.in/courses"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "About Us",
+          "item": "https://newus.in/about"
+        }
+      ]
+    }
+    </script>
+    
+    <!-- Organization Schema with more details -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Newus Dharamshala",
+      "url": "https://newus.in",
+      "logo": "https://newus.in/newus-logo.png",
+      "description": "28 years of excellence in IT education. Training 74,000+ students in career-ready skills.",
+      "foundingDate": "1998",
+      "slogan": "Transform Your Future with Industry-Ready IT Skills",
+      "knowsAbout": [
+        "Full Stack Development",
+        "Data Science",
+        "Digital Marketing",
+        "Python Programming",
+        "Java Development",
+        "Web Development",
+        "Career Training",
+        "IT Education"
+      ]
+    }
+    </script>
   </head>
 
   <body>

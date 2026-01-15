@@ -37,7 +37,7 @@ const Footer = () => {
                 alt="Newus Logo" 
                 className="w-10 h-10 object-contain"
               />
-              <span className="font-display text-xl font-bold">Newus Dharamshala</span>
+              <span className="font-display text-xl font-bold">NEW US Dharamshala</span>
             </Link>
             <p className="text-muted-foreground text-sm mb-6 leading-relaxed">
               Transforming lives through education and technology since 1998. 

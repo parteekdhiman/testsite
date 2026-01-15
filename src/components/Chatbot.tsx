@@ -3,7 +3,8 @@ import { MessageCircle, X, Send } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { ChatMessage, generateChatbotResponse } from "@/utils/chatbotService";
+import { ChatMessage, sendMessage } from "@/utils/chatbotService";
+import ReactMarkdown from "react-markdown";
 
 const Chatbot = memo(() => {
   const [isOpen, setIsOpen] = useState(false);
@@ -26,7 +27,7 @@ const Chatbot = memo(() => {
     }
   }, [messages]);
 
-  const handleSendMessage = useCallback(() => {
+  const handleSendMessage = useCallback(async () => {
     if (!inputValue.trim()) return;
 
     // Add user message
@@ -41,19 +42,48 @@ const Chatbot = memo(() => {
     setInputValue("");
     setIsLoading(true);
 
-    // Simulate processing delay
-    setTimeout(() => {
-      const botResponse = generateChatbotResponse(inputValue);
-      const botMessage: ChatMessage = {
-        id: (Date.now() + 1).toString(),
-        text: botResponse,
-        sender: "bot",
-        timestamp: new Date(),
-      };
-      setMessages((prev) => [...prev, botMessage]);
+    // Create a placeholder for the bot response
+    const botMessageId = (Date.now() + 1).toString();
+    const botMessagePlaceholder: ChatMessage = {
+      id: botMessageId,
+      text: "",
+      sender: "bot",
+      timestamp: new Date(),
+    };
+    setMessages((prev) => [...prev, botMessagePlaceholder]);
+
+    try {
+      const stream = await sendMessage(messages, inputValue);
+
+      for await (const chunk of stream) {
+        const content = chunk.choices[0]?.delta?.content;
+        if (content) {
+          setMessages((prev) => {
+            const newMessages = [...prev];
+            const lastMessageIndex = newMessages.length - 1;
+            newMessages[lastMessageIndex] = {
+              ...newMessages[lastMessageIndex],
+              text: newMessages[lastMessageIndex].text + content,
+            };
+            return newMessages;
+          });
+        }
+      }
+    } catch (error) {
+      console.error("Error sending message:", error);
+      setMessages((prev) => {
+        const newMessages = [...prev];
+        const lastMessageIndex = newMessages.length - 1;
+        newMessages[lastMessageIndex] = {
+          ...newMessages[lastMessageIndex],
+          text: "Sorry, I encountered an error. Please try again later.",
+        };
+        return newMessages;
+      });
+    } finally {
       setIsLoading(false);
-    }, 300);
-  }, [inputValue]);
+    }
+  }, [inputValue, messages]);
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
     if (e.key === "Enter" && !e.shiftKey) {
@@ -68,7 +98,7 @@ const Chatbot = memo(() => {
       {!isOpen && (
         <button
           onClick={() => setIsOpen(true)}
-          className="fixed bottom-6 right-6 z-40 w-14 h-14 rounded-full bg-gradient-to-r from-primary to-pink-500 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110 flex items-center justify-center text-white"
+          className="fixed bottom-20 right-6 z-40 w-14 h-14 rounded-full bg-gradient-to-r from-primary to-pink-500 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110 flex items-center justify-center text-white"
           aria-label="Open chatbot"
         >
           <MessageCircle className="w-6 h-6" />
@@ -77,7 +107,7 @@ const Chatbot = memo(() => {
 
       {/* Chat Window */}
       {isOpen && (
-        <div className="fixed bottom-6 right-6 z-50 w-96 h-[600px] bg-background rounded-lg shadow-2xl border border-border/50 glass flex flex-col animate-in fade-in slide-in-from-bottom-5 duration-300">
+        <div className="fixed bottom-20 right-6 z-50 w-96 h-[600px] bg-background rounded-lg shadow-2xl border border-border/50 glass flex flex-col animate-in fade-in slide-in-from-bottom-5 duration-300">
           {/* Header */}
           <div className="bg-gradient-to-r from-primary to-pink-500 text-white p-4 rounded-t-lg flex items-center justify-between">
             <div>
@@ -109,11 +139,17 @@ const Chatbot = memo(() => {
                       : "bg-secondary/70 text-foreground rounded-bl-none border border-border/50"
                   }`}
                 >
-                  {message.text}
+                  {message.sender === "user" ? (
+                    message.text
+                  ) : (
+                    <div className="prose prose-sm dark:prose-invert max-w-none">
+                      <ReactMarkdown>{message.text}</ReactMarkdown>
+                    </div>
+                  )}
                 </div>
               </div>
             ))}
-            {isLoading && (
+            {isLoading && messages[messages.length - 1].text === "" && (
               <div className="flex justify-start">
                 <div className="bg-secondary/70 text-foreground px-4 py-2 rounded-lg rounded-bl-none border border-border/50">
                   <div className="flex gap-1">
@@ -134,7 +170,7 @@ const Chatbot = memo(() => {
                 placeholder="Ask about courses..."
                 value={inputValue}
                 onChange={(e) => setInputValue(e.target.value)}
-                onKeyPress={handleKeyPress}
+                onKeyDown={handleKeyPress}
                 disabled={isLoading}
                 className="bg-background border-border/50"
               />

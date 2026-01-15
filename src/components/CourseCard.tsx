@@ -3,8 +3,6 @@ import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { Badge } from "@/components/ui/badge";
 import type { Course } from "@/data/coursesList";
-import { submitCourseInquiry } from "@/utils/apiService";
-import { useToast } from "@/hooks/use-toast";
 
 interface CourseCardProps {
   course: Course;
@@ -20,31 +18,8 @@ const typeGradients: Record<string, string> = {
 
 const CourseCard = ({ course, featured = false, id = 0 }: CourseCardProps) => {
   const gradient = typeGradients[course.type] || "from-primary to-pink-500";
-  const { toast } = useToast();
+
   
-  const handleCourseInquiry = async () => {
-    try {
-      await submitCourseInquiry({
-        fullName: "Student",
-        email: "student@example.com",
-        course: course.name,
-        phone:"1234567890",
-        brochureUrl: course.brochure || ""
-      });
-      
-      toast({
-        title: "Inquiry Submitted!",
-        description: `We've received your inquiry about ${course.name}. We'll contact you shortly.`,
-      });
-    } catch (error) {
-      toast({
-        title: "Submission Failed",
-        description: "There was an error submitting your inquiry. Please try again.",
-        variant: "destructive"
-      });
-      console.error("Course inquiry error:", error);
-    }
-  };
 
   return (
     <div className="group glass rounded-2xl overflow-hidden transition-all duration-300 hover:scale-[1.02] hover:shadow-lg">
