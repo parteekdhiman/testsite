@@ -1,8 +1,14 @@
 import { OpenRouter } from "@openrouter/sdk";
 import { coursesList } from "@/data/coursesList";
 
-const apiKey = import.meta.env.VITE_OPENROUTER_API_KEY;
-const ai = apiKey ? new OpenRouter({ apiKey }) : null;
+const apiKey = "sk-or-v1-084e1641adb2dcfdaeaf93e6b817786099fff3bf1647e0c3d138a9237614";
+const ai = apiKey
+  ? new OpenRouter({
+      apiKey,
+      httpReferer: "https://www.newus.in/", // Required by OpenRouter
+      xTitle: "NEWUS Learner Hub", // Required by OpenRouter
+    })
+  : null;
 
 const SYSTEM_PROMPT = `You are a helpful assistant for NEWUS Learner Hub.
 Use the following course data to answer user questions.
