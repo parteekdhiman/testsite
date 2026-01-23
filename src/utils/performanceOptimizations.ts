@@ -36,7 +36,6 @@ export const throttle = <T extends (...args: any[]) => any>(
 // Intersection Observer for lazy loading
 export const createLazyLoadObserver = (callback: (entry: IntersectionObserverEntry) => void) => {
   if (!("IntersectionObserver" in window)) {
-    console.warn("IntersectionObserver not supported");
     return null;
   }
 
@@ -98,9 +97,9 @@ export const perf = {
       try {
         performance.measure(name, startMark, endMark);
         const measure = performance.getEntriesByName(name)[0];
-        console.debug(`${name}: ${measure.duration.toFixed(2)}ms`);
+        // Performance measurement completed silently
       } catch (e) {
-        console.warn("Performance measurement failed:", e);
+        // Silently handle performance measurement failures
       }
     }
   },

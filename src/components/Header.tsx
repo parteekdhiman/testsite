@@ -24,7 +24,7 @@ const Header = () => {
               className="w-10 h-10 object-contain"
             />
             <span className="font-display text-xl font-bold text-foreground">
-              Newus
+              NEW US
             </span>
           </Link>
 

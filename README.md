@@ -20,6 +20,19 @@ If you want to work locally using your own IDE, you can clone this repo and push
 
 The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
 
+## Environment Setup
+
+Before running the application, copy the environment variables:
+
+```sh
+# Copy environment file
+cp .env.example .env
+```
+
+Edit the `.env` file with your configuration values. See `.env.example` for all available options.
+
+## Development
+
 Follow these steps:
 
 ```sh
@@ -28,6 +41,32 @@ git clone <YOUR_GIT_URL>
 
 # Step 2: Navigate to the project directory.
 cd <YOUR_PROJECT_NAME>
+
+# Step 3: Install the necessary dependencies.
+npm install
+
+# Step 4: Set up environment variables
+cp .env.example .env
+# Edit .env with your configuration
+
+# Step 5: Start the development server with auto-reloading and an instant preview.
+npm run dev
+```
+
+## Testing
+
+Run the test suite:
+
+```sh
+# Run tests once
+npm run test:run
+
+# Run tests in watch mode
+npm run test
+
+# Run tests with UI
+npm run test:ui
+```
 
 # Step 3: Install the necessary dependencies.
 npm i

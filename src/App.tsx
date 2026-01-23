@@ -6,7 +6,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Suspense, lazy, memo } from "react";
 import Chatbot from "./components/Chatbot";
 import ScrollToTop from "./pages/ScrollToTop";
-import LandingSnow from "./components/LandingSnow";
+// import LandingSnow from "./components/LandingSnow";
 
 // Lazy load pages for better code splitting
 const Index = lazy(() => import("./pages/Index"));
@@ -44,9 +44,9 @@ const App = () => (
       <BrowserRouter
         future={{ v7_startTransition: true, v7_relativeSplatPath: true }}
       >
-        <LandingSnow />
-        <Suspense fallback={<LoadingFallback />}>
           <ScrollToTop />
+        {/* <LandingSnow /> */}
+        <Suspense fallback={<LoadingFallback />}>
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/courses" element={<Courses />} />

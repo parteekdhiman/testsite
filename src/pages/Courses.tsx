@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import CourseCard from "@/components/CourseCard";
-import { coursesList } from "@/data/coursesList";
+import { coursesList } from "../data/coursesList";
 import Iridescence from "@/components/ui/Iridescence";
 import PageTransition from "@/components/PageTransition";
 

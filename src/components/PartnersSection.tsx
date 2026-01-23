@@ -1,4 +1,4 @@
-import { partners } from "@/data/partners";
+import { partners } from "../data/partners";
 
 const PartnersSection = () => {
   return (

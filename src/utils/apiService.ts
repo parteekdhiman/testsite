@@ -3,18 +3,42 @@
  * Location: src/services/api.ts
  */
 
+import { log } from "console";
+
 // Base URL for API requests — set `VITE_API_URL` to your backend root (e.g. https://api.example.com)
 const API_BASE_URL = import.meta.env.VITE_API_URL || '';
+/**
+ * Retry configuration
+ */
+const RETRY_CONFIG = {
+  maxRetries: 3,
+  baseDelay: 1000,
+  maxDelay: 10000,
+};
 
 /**
- * Generic API request function with error handling
+ * Sleep utility for retry delays
+ */
+const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+
+/**
+ * Calculate exponential backoff delay
+ */
+const getRetryDelay = (attempt: number): number => {
+  const delay = RETRY_CONFIG.baseDelay * Math.pow(2, attempt);
+  return Math.min(delay, RETRY_CONFIG.maxDelay);
+};
+
+/**
+ * Generic API request function with error handling and retry logic
  */
 const apiRequest = async (
   endpoint: string,
-  options: RequestInit = {}
+  options: RequestInit = {},
+  retryCount = 0
 ): Promise<any> => {
   const url = `${API_BASE_URL}${endpoint}`;
-  
+
   const defaultOptions: RequestInit = {
     headers: {
       'Content-Type': 'application/json',
@@ -45,6 +69,19 @@ const apiRequest = async (
         (data && data.error) ||
         (typeof data === 'string' ? data : null) ||
         `HTTP ${response.status}: ${response.statusText}`;
+
+      // Retry for network errors or server errors (5xx)
+      if (retryCount < RETRY_CONFIG.maxRetries && (
+        response.status >= 500 ||
+        response.status === 408 || // Request timeout
+        response.status === 429    // Too many requests
+      )) {
+        const delay = getRetryDelay(retryCount);
+        console.warn(`API request failed, retrying in ${delay}ms... (${retryCount + 1}/${RETRY_CONFIG.maxRetries})`);
+        await sleep(delay);
+        return apiRequest(endpoint, options, retryCount + 1);
+      }
+
       throw new Error(errMsg);
     }
 
@@ -55,6 +92,17 @@ const apiRequest = async (
 
     return data;
   } catch (error) {
+    // Handle network errors with retry
+    if (retryCount < RETRY_CONFIG.maxRetries && (
+      error instanceof TypeError || // Network errors
+      error.name === 'AbortError'   // Request aborted
+    )) {
+      const delay = getRetryDelay(retryCount);
+      console.warn(`Network error, retrying in ${delay}ms... (${retryCount + 1}/${RETRY_CONFIG.maxRetries})`);
+      await sleep(delay);
+      return apiRequest(endpoint, options, retryCount + 1);
+    }
+
     console.error(`API Error (${endpoint}):`, error);
     throw error;
   }

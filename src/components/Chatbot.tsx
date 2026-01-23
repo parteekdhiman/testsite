@@ -3,33 +3,79 @@ import { MessageCircle, X, Send } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { ChatMessage, generateChatbotResponse } from "@/utils/chatbotService";
+import { useApiCall } from "@/hooks/useApi";
+import ChatMessageItem from "./ui/ChatMessageItem";
+
+export interface ChatMessage {
+  id: string;
+  text: string;
+  sender: "user" | "bot";
+  timestamp: Date;
+}
+
+const MAX_HISTORY = 10;
 
 const Chatbot = memo(() => {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<ChatMessage[]>([
     {
       id: "1",
-      text: "👋 Hello! Welcome to NEWUS Learner Hub! I'm your course assistant. Ask me anything about our courses, durations, placement opportunities, or course types!",
+      text:
+        "👋 Hello! Welcome to NEWUS Learner Hub! Ask me about courses, duration, or placements.",
       sender: "bot",
       timestamp: new Date(),
     },
   ]);
   const [inputValue, setInputValue] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
 
-  // Auto-scroll to bottom when new messages arrive
   useEffect(() => {
-    if (scrollRef.current) {
-      scrollRef.current.scrollIntoView({ behavior: "smooth" });
-    }
+    scrollRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
-  const handleSendMessage = useCallback(() => {
-    if (!inputValue.trim()) return;
+  const { execute: sendChatMessage, isLoading: isApiLoading } = useApiCall(
+    async (data: { message: string; conversationHistory: ChatMessage[] }) => {
+      const trimmedHistory = data.conversationHistory.slice(-MAX_HISTORY);
 
-    // Add user message
+      const response = await fetch(
+        "https://newusmailer.vercel.app/api/chatbot",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            message: data.message,
+            conversationHistory: trimmedHistory.map((m) => ({
+              sender: m.sender,
+              text: m.text,
+            })),
+          }),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Chatbot API failed");
+      }
+
+      return response.json();
+    },
+    {
+      onSuccess: (data) => {
+        setMessages((prev) => [
+          ...prev,
+          {
+            id: Date.now().toString(),
+            text: data.response,
+            sender: "bot",
+            timestamp: new Date(data.timestamp),
+          },
+        ]);
+      },
+    }
+  );
+
+  const handleSendMessage = useCallback(() => {
+    if (isApiLoading || !inputValue.trim()) return;
+
     const userMessage: ChatMessage = {
       id: Date.now().toString(),
       text: inputValue,
@@ -37,119 +83,55 @@ const Chatbot = memo(() => {
       timestamp: new Date(),
     };
 
-    setMessages((prev) => [...prev, userMessage]);
+    const updatedMessages = [...messages, userMessage];
+
+    setMessages(updatedMessages);
     setInputValue("");
-    setIsLoading(true);
 
-    // Simulate processing delay
-    setTimeout(() => {
-      const botResponse = generateChatbotResponse(inputValue);
-      const botMessage: ChatMessage = {
-        id: (Date.now() + 1).toString(),
-        text: botResponse,
-        sender: "bot",
-        timestamp: new Date(),
-      };
-      setMessages((prev) => [...prev, botMessage]);
-      setIsLoading(false);
-    }, 300);
-  }, [inputValue]);
-
-  const handleKeyPress = (e: React.KeyboardEvent) => {
-    if (e.key === "Enter" && !e.shiftKey) {
-      e.preventDefault();
-      handleSendMessage();
-    }
-  };
+    sendChatMessage({
+      message: inputValue,
+      conversationHistory: updatedMessages,
+    });
+  }, [inputValue, messages, isApiLoading, sendChatMessage]);
 
   return (
     <>
-      {/* Floating Chat Button */}
       {!isOpen && (
         <button
           onClick={() => setIsOpen(true)}
-          className="fixed bottom-6 right-6 z-40 w-14 h-14 rounded-full bg-gradient-to-r from-primary to-pink-500 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110 flex items-center justify-center text-white"
-          aria-label="Open chatbot"
+          className="fixed bottom-20 right-6 z-40 w-14 h-14 rounded-full bg-gradient-to-r from-primary to-pink-500 text-white flex items-center justify-center"
         >
-          <MessageCircle className="w-6 h-6" />
+          <MessageCircle />
         </button>
       )}
 
-      {/* Chat Window */}
       {isOpen && (
-        <div className="fixed bottom-6 right-6 z-50 w-96 h-[600px] bg-background rounded-lg shadow-2xl border border-border/50 glass flex flex-col animate-in fade-in slide-in-from-bottom-5 duration-300">
-          {/* Header */}
-          <div className="bg-gradient-to-r from-primary to-pink-500 text-white p-4 rounded-t-lg flex items-center justify-between">
-            <div>
-              <h3 className="font-semibold text-lg">Course Assistant</h3>
-              <p className="text-xs text-white/80">Ask about our courses</p>
-            </div>
-            <button
-              onClick={() => setIsOpen(false)}
-              className="hover:bg-white/20 p-1 rounded-full transition-colors"
-              aria-label="Close chatbot"
-            >
-              <X className="w-5 h-5" />
+        <div className="fixed bottom-20 right-6 z-50 w-96 h-[600px] bg-background border rounded-lg flex flex-col">
+          <div className="bg-gradient-to-r from-primary to-pink-500 text-white p-4 flex justify-between">
+            <h3 className="font-semibold">Course Assistant</h3>
+            <button onClick={() => setIsOpen(false)}>
+              <X />
             </button>
           </div>
 
-          {/* Messages Area */}
           <ScrollArea className="flex-1 p-4 space-y-4">
-            {messages.map((message) => (
-              <div
-                key={message.id}
-                className={`flex ${
-                  message.sender === "user" ? "justify-end" : "justify-start"
-                }`}
-              >
-                <div
-                  className={`max-w-xs px-4 py-2 rounded-lg whitespace-pre-wrap break-words ${
-                    message.sender === "user"
-                      ? "bg-gradient-to-r from-primary to-pink-500 text-white rounded-br-none"
-                      : "bg-secondary/70 text-foreground rounded-bl-none border border-border/50"
-                  }`}
-                >
-                  {message.text}
-                </div>
-              </div>
+            {messages.map((msg) => (
+              <ChatMessageItem key={msg.id} message={msg} />
             ))}
-            {isLoading && (
-              <div className="flex justify-start">
-                <div className="bg-secondary/70 text-foreground px-4 py-2 rounded-lg rounded-bl-none border border-border/50">
-                  <div className="flex gap-1">
-                    <div className="w-2 h-2 bg-primary rounded-full animate-bounce" />
-                    <div className="w-2 h-2 bg-primary rounded-full animate-bounce delay-100" />
-                    <div className="w-2 h-2 bg-primary rounded-full animate-bounce delay-200" />
-                  </div>
-                </div>
-              </div>
-            )}
+            {isApiLoading && <p className="text-sm">Typing…</p>}
             <div ref={scrollRef} />
           </ScrollArea>
 
-          {/* Input Area */}
-          <div className="border-t border-border/50 p-4 bg-secondary/30">
-            <div className="flex gap-2">
-              <Input
-                placeholder="Ask about courses..."
-                value={inputValue}
-                onChange={(e) => setInputValue(e.target.value)}
-                onKeyPress={handleKeyPress}
-                disabled={isLoading}
-                className="bg-background border-border/50"
-              />
-              <Button
-                size="sm"
-                onClick={handleSendMessage}
-                disabled={isLoading || !inputValue.trim()}
-                className="bg-gradient-to-r from-primary to-pink-500 hover:opacity-90 shrink-0"
-              >
-                <Send className="w-4 h-4" />
-              </Button>
-            </div>
-            <p className="text-xs text-muted-foreground mt-2">
-              💡 Try: "Tell me about Data Science" or "Flagship courses"
-            </p>
+          <div className="p-4 border-t flex gap-2">
+            <Input
+              value={inputValue}
+              onChange={(e) => setInputValue(e.target.value)}
+              placeholder="Ask about courses..."
+              disabled={isApiLoading}
+            />
+            <Button onClick={handleSendMessage} disabled={isApiLoading}>
+              <Send />
+            </Button>
           </div>
         </div>
       )}
