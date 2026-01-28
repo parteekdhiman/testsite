@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -36,9 +36,9 @@ const ApiTest = () => {
   // Check health on component mount
   useEffect(() => {
     checkApiHealth();
-  }, []);
+  }, [checkApiHealth]);
 
-  const checkApiHealth = async () => {
+  const checkApiHealth = useCallback(async () => {
     try {
       const response = await checkHealth();
       if (response.status === "OK") {
@@ -62,7 +62,7 @@ const ApiTest = () => {
       });
       console.error("Health check error:", error);
     }
-  };
+  }, [toast]);
 
   const testLeadSubmission = async () => {
     try {

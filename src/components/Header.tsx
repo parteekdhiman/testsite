@@ -10,6 +10,7 @@ const Header = () => {
     { name: "Home", href: "/" },
     { name: "Courses", href: "/courses" },
     { name: "About", href: "/about" },
+    { name: "NIFS", href: "/ifs" },
     { name: "Contact", href: "/contact" },
   ];
 
@@ -18,9 +19,9 @@ const Header = () => {
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16 md:h-20">
           <Link to="/" className="flex items-center gap-3">
-            <img 
-              src="/newus-logo.png" 
-              alt="Newus Logo" 
+            <img
+              src="/newus-logo.png"
+              alt="Newus Logo"
               className="w-10 h-10 object-contain"
             />
             <span className="font-display text-xl font-bold text-foreground">

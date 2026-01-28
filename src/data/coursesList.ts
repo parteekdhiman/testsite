@@ -66,7 +66,7 @@ export interface Course {
   outcome: string;
   duration: string;
   image: string;
-  tools: { type: string; img: any }[];
+  tools: { type: string; img: JSX.Element }[];
   content: (CourseContent | string)[];
   placement: boolean;
   navbar: boolean;

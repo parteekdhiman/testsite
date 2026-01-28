@@ -2,6 +2,7 @@ import { memo } from "react";
 import { ChatMessage } from "../Chatbot";
 
 const ChatMessageItem = memo(({ message }: { message: ChatMessage }) => {
+  
   return (
     <div
       className={`flex ${

@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 
 const AboutSection: React.FC = () => {
   return (
-    <section id="about" className="py-20 bg-background">
+    <section id="about" className="py-28 bg-background">
       <div className="container mx-auto px-4">
         <div className="grid lg:grid-cols-2 gap-10 items-center mb-12">
           <div>
@@ -35,7 +35,7 @@ const AboutSection: React.FC = () => {
                 <div className="text-sm text-muted-foreground">Study Abroad Placements</div>
               </div>
               <div className="text-center">
-                <div className="text-2xl font-bold text-foreground">15+</div>
+                <div className="text-2xl font-bold text-foreground">28+</div>
                 <div className="text-sm text-muted-foreground">Years Experience</div>
               </div>
               <div className="text-center">

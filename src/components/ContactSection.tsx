@@ -23,23 +23,64 @@ const ContactSection = () => {
       toast({ title: "Enter email", description: "Please enter an email to subscribe." });
       return;
     }
+
+    // SECURITY: Basic email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(subscriberEmail.trim())) {
+      toast({
+        title: "Invalid Email",
+        description: "Please enter a valid email address.",
+        variant: "destructive"
+      });
+      return;
+    }
     
     try {
       await subscribeNewsletter({ email: subscriberEmail });
       toast({ title: "Subscribed", description: "You'll receive updates to your email." });
       setSubscriberEmail("");
     } catch (error) {
+      const errorMsg = error instanceof Error ? error.message : 'Unknown error';
       toast({
         title: "Subscription Failed",
-        description: "There was an error subscribing. Please try again.",
+        description: errorMsg.includes('429') ? "Too many requests. Please try again later." : "There was an error subscribing. Please try again.",
         variant: "destructive"
       });
-      console.error("Newsletter subscription error:", error);
     }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    // SECURITY: Validate form data before submission
+    if (!formData.name || !formData.email || !formData.phone) {
+      toast({
+        title: "Missing Fields",
+        description: "Please fill in all required fields.",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(formData.email.trim())) {
+      toast({
+        title: "Invalid Email",
+        description: "Please enter a valid email address.",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    const phoneRegex = /^[\d\s\-+()]{7,20}$/;
+    if (!phoneRegex.test(formData.phone.trim())) {
+      toast({
+        title: "Invalid Phone",
+        description: "Please enter a valid phone number.",
+        variant: "destructive"
+      });
+      return;
+    }
     
     try {
       // Split name into first and last name
@@ -50,8 +91,8 @@ const ContactSection = () => {
       await submitLead({
         firstName,
         lastName,
-        email: formData.email,
-        phone: formData.phone,
+        email: formData.email.trim(),
+        phone: formData.phone.trim(),
         message: formData.message || `Interested in ${formData.course || 'courses'}`
       });
       
@@ -62,12 +103,12 @@ const ContactSection = () => {
       
       setFormData({ name: "", email: "", phone: "", course: "", message: "" });
     } catch (error) {
+      const errorMsg = error instanceof Error ? error.message : 'Unknown error';
       toast({
         title: "Submission Failed",
-        description: "There was an error submitting your enquiry. Please try again.",
+        description: errorMsg.includes('429') ? "Too many submissions. Please try again later." : "There was an error submitting your enquiry. Please try again.",
         variant: "destructive"
       });
-      console.error("Lead submission error:", error);
     }
   };
 

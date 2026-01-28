@@ -2156,7 +2156,7 @@ const gemini: JSX.Element = (
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
   >
-    <g clip-path="url(#clip0_53_3)">
+    <g clipPath="url(#clip0_53_3)">
       <mask
         id="mask0_53_3"
         style={{ maskType: "alpha" }}
@@ -2252,9 +2252,9 @@ const gemini: JSX.Element = (
         width="32.4831"
         height="35.5158"
         filterUnits="userSpaceOnUse"
-        color-interpolation-filters="sRGB"
+        colorInterpolationFilters="sRGB"
       >
-        <feFlood flood-opacity="0" result="BackgroundImageFix" />
+        <feFlood floodOpacity="0" result="BackgroundImageFix" />
         <feBlend
           mode="normal"
           in="SourceGraphic"
@@ -2273,9 +2273,9 @@ const gemini: JSX.Element = (
         width="76.2594"
         height="76.8902"
         filterUnits="userSpaceOnUse"
-        color-interpolation-filters="sRGB"
+        colorInterpolationFilters="sRGB"
       >
-        <feFlood flood-opacity="0" result="BackgroundImageFix" />
+        <feFlood floodOpacity="0" result="BackgroundImageFix" />
         <feBlend
           mode="normal"
           in="SourceGraphic"
@@ -2294,9 +2294,9 @@ const gemini: JSX.Element = (
         width="70.4509"
         height="79.268"
         filterUnits="userSpaceOnUse"
-        color-interpolation-filters="sRGB"
+        colorInterpolationFilters="sRGB"
       >
-        <feFlood flood-opacity="0" result="BackgroundImageFix" />
+        <feFlood floodOpacity="0" result="BackgroundImageFix" />
         <feBlend
           mode="normal"
           in="SourceGraphic"
@@ -2315,9 +2315,9 @@ const gemini: JSX.Element = (
         width="70.4509"
         height="79.268"
         filterUnits="userSpaceOnUse"
-        color-interpolation-filters="sRGB"
+        colorInterpolationFilters="sRGB"
       >
-        <feFlood flood-opacity="0" result="BackgroundImageFix" />
+        <feFlood floodOpacity="0" result="BackgroundImageFix" />
         <feBlend
           mode="normal"
           in="SourceGraphic"
@@ -2336,9 +2336,9 @@ const gemini: JSX.Element = (
         width="70.664"
         height="72.0287"
         filterUnits="userSpaceOnUse"
-        color-interpolation-filters="sRGB"
+        colorInterpolationFilters="sRGB"
       >
-        <feFlood flood-opacity="0" result="BackgroundImageFix" />
+        <feFlood floodOpacity="0" result="BackgroundImageFix" />
         <feBlend
           mode="normal"
           in="SourceGraphic"
@@ -2357,9 +2357,9 @@ const gemini: JSX.Element = (
         width="66.6486"
         height="65.6032"
         filterUnits="userSpaceOnUse"
-        color-interpolation-filters="sRGB"
+        colorInterpolationFilters="sRGB"
       >
-        <feFlood flood-opacity="0" result="BackgroundImageFix" />
+        <feFlood floodOpacity="0" result="BackgroundImageFix" />
         <feBlend
           mode="normal"
           in="SourceGraphic"
@@ -2378,9 +2378,9 @@ const gemini: JSX.Element = (
         width="68.1407"
         height="68.6198"
         filterUnits="userSpaceOnUse"
-        color-interpolation-filters="sRGB"
+        colorInterpolationFilters="sRGB"
       >
-        <feFlood flood-opacity="0" result="BackgroundImageFix" />
+        <feFlood floodOpacity="0" result="BackgroundImageFix" />
         <feBlend
           mode="normal"
           in="SourceGraphic"
@@ -2399,9 +2399,9 @@ const gemini: JSX.Element = (
         width="67.8524"
         height="66.8239"
         filterUnits="userSpaceOnUse"
-        color-interpolation-filters="sRGB"
+        colorInterpolationFilters="sRGB"
       >
-        <feFlood flood-opacity="0" result="BackgroundImageFix" />
+        <feFlood floodOpacity="0" result="BackgroundImageFix" />
         <feBlend
           mode="normal"
           in="SourceGraphic"
@@ -2420,9 +2420,9 @@ const gemini: JSX.Element = (
         width="49.7078"
         height="46.2763"
         filterUnits="userSpaceOnUse"
-        color-interpolation-filters="sRGB"
+        colorInterpolationFilters="sRGB"
       >
-        <feFlood flood-opacity="0" result="BackgroundImageFix" />
+        <feFlood floodOpacity="0" result="BackgroundImageFix" />
         <feBlend
           mode="normal"
           in="SourceGraphic"
@@ -2441,9 +2441,9 @@ const gemini: JSX.Element = (
         width="59.929"
         height="58.7362"
         filterUnits="userSpaceOnUse"
-        color-interpolation-filters="sRGB"
+        colorInterpolationFilters="sRGB"
       >
-        <feFlood flood-opacity="0" result="BackgroundImageFix" />
+        <feFlood floodOpacity="0" result="BackgroundImageFix" />
         <feBlend
           mode="normal"
           in="SourceGraphic"
@@ -2462,9 +2462,9 @@ const gemini: JSX.Element = (
         width="49.4085"
         height="46.3851"
         filterUnits="userSpaceOnUse"
-        color-interpolation-filters="sRGB"
+        colorInterpolationFilters="sRGB"
       >
-        <feFlood flood-opacity="0" result="BackgroundImageFix" />
+        <feFlood floodOpacity="0" result="BackgroundImageFix" />
         <feBlend
           mode="normal"
           in="SourceGraphic"
@@ -2484,10 +2484,10 @@ const gemini: JSX.Element = (
         y2="11.5415"
         gradientUnits="userSpaceOnUse"
       >
-        <stop stop-color="#4893FC" />
-        <stop offset="0.27" stop-color="#4893FC" />
-        <stop offset="0.777" stop-color="#969DFF" />
-        <stop offset="1" stop-color="#BD99FE" />
+        <stop stopColor="#4893FC" />
+        <stop offset="0.27" stopColor="#4893FC" />
+        <stop offset="0.777" stopColor="#969DFF" />
+        <stop offset="1" stopColor="#BD99FE" />
       </linearGradient>
       <clipPath id="clip0_53_3">
         <rect width="50" height="50" fill="white" />
@@ -2506,7 +2506,7 @@ const perplexity: JSX.Element = (
     <path
       d="M42.9945 1.94167L25.5018 15.1417H42.9945V1.94167ZM42.9945 1.94167V5.55556M25.4613 0V50M42.9945 28.3389L25.5018 15.1389M42.9945 28.3389V47.2625L25.5018 34.0625M42.9945 28.3389L25.5 15.1389M42.9945 28.3389L42.9926 33.9861H50.5V15.1389H25.5M25.5018 15.1389V34.0625M25.5018 15.1389L8.00737 28.3389M25.5018 34.0625L8.00737 47.2625V28.3389M8.00737 28.3389L8.00553 33.9861H0.5V15.1389H25.5M8.00737 28.3389L25.5 15.1389M25.5 15.1417L8.00553 1.94167V15.1417H25.5Z"
       stroke="#20808D"
-      stroke-miterlimit="10"
+      strokeMiterlimit="10"
     />
   </svg>
 );
@@ -2518,7 +2518,7 @@ const lightroom: JSX.Element = (
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
   >
-    <g clip-path="url(#clip0_54_2)">
+    <g clipPath="url(#clip0_54_2)">
       <path
         d="M8.85335 0H41.1466C46.0413 0 50 4.06 50 9.08V40.92C50 45.94 46.0413 50 41.1466 50H8.85335C3.95866 50 0 45.94 0 40.92V9.08C0 4.06 3.95866 0 8.85335 0Z"
         fill="#001E36"
@@ -2547,7 +2547,7 @@ const animate: JSX.Element = (
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
   >
-    <g clip-path="url(#clip0_55_9)">
+    <g clipPath="url(#clip0_55_9)">
       <path
         d="M8.86719 0H41.2109C46.1133 0 50.0781 4.06 50.0781 9.08V40.92C50.0781 45.94 46.1133 50 41.2109 50H8.86719C3.96484 50 0 45.94 0 40.92V9.08C0 4.06 3.96484 0 8.86719 0Z"
         fill="#00005B"
@@ -2576,7 +2576,7 @@ const Premierepro: JSX.Element = (
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
   >
-    <g clip-path="url(#clip0_55_16)">
+    <g clipPath="url(#clip0_55_16)">
       <path
         d="M8.85417 0H41.1458C46.0417 0 50 4.05983 50 9.0812V40.9188C50 45.9402 46.0417 50 41.1458 50H8.85417C3.95833 50 0 45.9402 0 40.9188V9.0812C0 4.05983 3.95833 0 8.85417 0Z"
         fill="#00005B"

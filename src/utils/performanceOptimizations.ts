@@ -3,7 +3,7 @@
  */
 
 // Debounce function for event handlers
-export const debounce = <T extends (...args: any[]) => any>(
+export const debounce = <T extends (...args: unknown[]) => unknown>(
   func: T,
   wait: number
 ): ((...args: Parameters<T>) => void) => {
@@ -19,7 +19,7 @@ export const debounce = <T extends (...args: any[]) => any>(
 };
 
 // Throttle function for event handlers
-export const throttle = <T extends (...args: any[]) => any>(
+export const throttle = <T extends (...args: unknown[]) => unknown>(
   func: T,
   limit: number
 ): ((...args: Parameters<T>) => void) => {
@@ -62,14 +62,14 @@ export const preloadImage = (src: string): Promise<void> => {
 
 // Cache management
 export const cacheManager = {
-  set: (key: string, value: any, ttl: number = 5 * 60 * 1000) => {
+  set: (key: string, value: unknown, ttl: number = 5 * 60 * 1000) => {
     const item = {
       value,
       expiry: Date.now() + ttl,
     };
     localStorage.setItem(key, JSON.stringify(item));
   },
-  get: (key: string) => {
+  get: (key: string): unknown => {
     const item = localStorage.getItem(key);
     if (!item) return null;
 

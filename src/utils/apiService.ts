@@ -36,7 +36,7 @@ const apiRequest = async (
   endpoint: string,
   options: RequestInit = {},
   retryCount = 0
-): Promise<any> => {
+): Promise<unknown> => {
   const url = `${API_BASE_URL}${endpoint}`;
 
   const defaultOptions: RequestInit = {
@@ -53,7 +53,7 @@ const apiRequest = async (
     });
 
     const contentType = response.headers.get('content-type') || '';
-    let data: any = null;
+    let data: unknown = null;
 
     if (contentType.includes('application/json')) {
       data = await response.json();

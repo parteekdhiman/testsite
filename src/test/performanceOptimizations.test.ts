@@ -72,15 +72,14 @@ describe('Performance Utilities', () => {
 
   describe('createLazyLoadObserver', () => {
     it('should return null when IntersectionObserver is not supported', () => {
-      // Mock window.IntersectionObserver as undefined
-      const originalIntersectionObserver = (window as any).IntersectionObserver;
-      delete (window as any).IntersectionObserver;
+      const originalIntersectionObserver = (window as unknown as { IntersectionObserver: unknown }).IntersectionObserver;
+      delete (window as unknown as { IntersectionObserver: unknown }).IntersectionObserver;
 
       const observer = createLazyLoadObserver(() => {});
       expect(observer).toBeNull();
 
       // Restore original
-      (window as any).IntersectionObserver = originalIntersectionObserver;
+      (window as unknown as { IntersectionObserver: unknown }).IntersectionObserver = originalIntersectionObserver;
     });
 
     it('should create IntersectionObserver when supported', () => {

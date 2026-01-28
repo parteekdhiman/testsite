@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { Badge } from "@/components/ui/badge";
 import type { Course } from "@/data/coursesList";
+import { createCourseSlugUrl } from "@/utils/slugUtils";
 
 interface CourseCardProps {
   course: Course;
@@ -68,7 +69,7 @@ const CourseCard = ({ course, featured = false, id = 0 }: CourseCardProps) => {
 
         {course.tools && course.tools.length > 0 && (
           <div className="flex flex-wrap gap-1.5 mb-4">
-            {course.tools.slice(0, 6).map((tool: any, idx: number) => (
+            {course.tools.slice(0, 6).map((tool: { type: string; img: JSX.Element }, idx: number) => (
               <div
                 key={idx}
                 className="w-7 h-7 rounded-full bg-white/10 backdrop-blur border border-white/20 flex items-center justify-center hover:scale-110 transition-transform"
@@ -88,7 +89,7 @@ const CourseCard = ({ course, featured = false, id = 0 }: CourseCardProps) => {
         )}
 
         <div className="flex gap-2">
-          <Link to={`/courses/${id ?? 0}`} className="flex-1">
+          <Link to={createCourseSlugUrl(id ?? 0, course.name)} className="flex-1">
             <Button
               variant="outline"
               size="sm"

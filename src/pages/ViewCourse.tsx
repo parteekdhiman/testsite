@@ -1,5 +1,5 @@
-import { useParams, Link } from "react-router-dom";
-import { useState } from "react";
+import { useParams, Link, useLocation, useNavigate } from "react-router-dom";
+import { useState, useEffect, useMemo, useCallback, memo } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { coursesList } from "@/data/coursesList";
@@ -23,7 +23,13 @@ import {
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { submitCourseInquiry } from "@/utils/apiService";
-import { log } from "console";
+import {
+  extractIdFromSlug,
+  isValidSlug,
+  getCorrectedSlugUrl,
+  createCourseSlugUrl,
+} from "@/utils/slugUtils";
+import { CourseDetailSkeleton } from "@/components/SkeletonLoader";
 
 // Icon mapping for skills
 const skillIconMap: Record<string, React.ReactNode> = {
@@ -63,11 +69,136 @@ const getIconForSkill = (skill: string): React.ReactNode => {
   return skillIconMap[skill] || <Code className="w-4 h-4" />;
 };
 
+/**
+ * Memoized recommendation component to prevent re-renders
+ */
+const RecommendedCourses = memo(
+  ({
+    courseId,
+    courseType,
+    courseCourseType,
+  }: {
+    courseId: number;
+    courseType: string;
+    courseCourseType: string;
+  }) => {
+    // Memoized recommendations computation
+    const recommendations = useMemo(() => {
+      const currentCourse = coursesList[courseId];
+      if (!currentCourse) return [];
+
+      const sameType = coursesList.filter(
+        (c, idx) =>
+          c.type === courseType && idx !== courseId
+      );
+      const sameCourseType = coursesList.filter(
+        (c, idx) =>
+          c.coursetype === courseCourseType && idx !== courseId
+      );
+
+      const combined = [...sameType];
+      sameCourseType.forEach((c) => {
+        if (!combined.find((x) => x.name === c.name)) combined.push(c);
+      });
+      coursesList.forEach((c, idx) => {
+        if (combined.length >= 4) return;
+        if (idx === courseId) return;
+        if (!combined.find((x) => x.name === c.name)) combined.push(c);
+      });
+
+      return combined.slice(0, 4);
+    }, [courseId, courseType, courseCourseType]);
+
+    return (
+      <div className="glass rounded-2xl p-6">
+        <h4 className="font-display font-semibold text-lg mb-3">
+          Recommended Courses
+        </h4>
+        <p className="text-sm text-muted-foreground mb-4">
+          Courses you may also like based on this program.
+        </p>
+        <div className="space-y-3">
+          {recommendations.map((rec) => {
+            const recIndex = coursesList.findIndex((c) => c.name === rec.name);
+            return (
+              <Link
+                to={createCourseSlugUrl(recIndex, rec.name)}
+                key={recIndex}
+                className="block"
+              >
+                <div className="flex items-center justify-between gap-3 p-3 rounded-lg hover:bg-secondary/40 transition-all">
+                  <div className="flex items-start gap-3">
+                    <div className="w-10 h-10 rounded-md bg-gradient-to-r from-primary to-pink-500 flex items-center justify-center text-white font-semibold text-sm shadow-sm">
+                      {rec.name
+                        .split(" ")
+                        .map((n) => n[0])
+                        .slice(0, 2)
+                        .join("")}
+                    </div>
+                    <div>
+                      <div className="text-sm font-medium text-foreground">
+                        {rec.name}
+                      </div>
+                      <div className="text-xs text-muted-foreground">
+                        {rec.type} • {rec.coursetype}
+                      </div>
+                    </div>
+                  </div>
+                  <div className="text-xs text-primary">View →</div>
+                </div>
+              </Link>
+            );
+          })}
+        </div>
+      </div>
+    );
+  }
+);
+
+RecommendedCourses.displayName = 'RecommendedCourses';
+
+/**
+ * Main ViewCourse component with slug routing and performance optimizations
+ */
 const ViewCourse = () => {
   const params = useParams();
-  const id = Number(params.id);
-  const course = coursesList[id];
+  const location = useLocation();
+  const navigate = useNavigate();
   const { toast } = useToast();
+
+  // Extract ID from slug (supports both /courses/slug-123 and /courses/123)
+  const courseId = useMemo(() => {
+    const slug = params.slug;
+    // Try to extract ID from slug format "name-id"
+    const idFromSlug = extractIdFromSlug(slug);
+    if (idFromSlug !== null) {
+      return idFromSlug;
+    }
+    // Fallback for legacy /courses/:id format
+    const legacyId = Number(slug);
+    return Number.isInteger(legacyId) && legacyId >= 0 ? legacyId : null;
+  }, [params.slug]);
+
+  // Get course data by ID
+  const course = useMemo(() => {
+    if (courseId === null || !Number.isInteger(courseId)) return null;
+    return coursesList[courseId] || null;
+  }, [courseId]);
+
+  // Correct URL if slug is invalid or missing
+  useEffect(() => {
+    if (!course || !params.slug) return;
+
+    // Check if current slug matches the expected format
+    const slugValid = isValidSlug(params.slug, courseId, course.name);
+    if (!slugValid) {
+      // Replace URL without causing navigation jank
+      const correctedUrl = getCorrectedSlugUrl(courseId, course.name);
+      window.history.replaceState(null, '', correctedUrl);
+    }
+  }, [course, courseId, params.slug]);
+
+  // Form state
   const [showBrochureForm, setShowBrochureForm] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
@@ -76,15 +207,18 @@ const ViewCourse = () => {
     phone: "",
   });
 
-  const handleFormChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
+  const handleFormChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      const { name, value } = e.target;
+      setFormData((prev) => ({
+        ...prev,
+        [name]: value,
+      }));
+    },
+    []
+  );
 
-  const handleBrochureDownload = async () => {
+  const handleBrochureDownload = useCallback(async () => {
     // Validate form
     if (!formData.name || !formData.email || !formData.phone) {
       toast({
@@ -109,14 +243,15 @@ const ViewCourse = () => {
     setIsSubmitting(true);
 
     try {
+      if (!course) return;
+      
       const data = await submitCourseInquiry({
         fullName: formData.name,
         email: formData.email,
         phone: formData.phone,
         course: course.name,
       });
-      console.log('submitCourseInquiry response:', data);
-      if (data && data.ok) {
+      if (data && (data as { ok?: boolean }).ok) {
         toast({
           title: "Thank You! 🎉",
           description:
@@ -174,56 +309,42 @@ const ViewCourse = () => {
     } finally {
       setIsSubmitting(false);
     }
-  };
-  console.log(course.brochure)
+  }, [formData, course, toast]);
 
-  // Recommendations: prefer same `type`, then same `coursetype`, exclude current
-  const getRecommendations = (currentCourse: typeof course, max = 4) => {
-    if (!currentCourse) return [];
-    const sameType = coursesList.filter(
-      (c) => c.type === currentCourse.type && c.name !== currentCourse.name
-    );
-    const sameCourseType = coursesList.filter(
-      (c) =>
-        c.coursetype === currentCourse.coursetype &&
-        c.name !== currentCourse.name
-    );
-
-    const combined: typeof coursesList = [] as any;
-    // add from sameType first
-    sameType.forEach((c) => combined.push(c));
-    // then add from sameCourseType if not already present
-    sameCourseType.forEach((c) => {
-      if (!combined.find((x) => x.name === c.name)) combined.push(c);
-    });
-    // finally fill with other courses if needed
-    coursesList.forEach((c) => {
-      if (combined.length >= max) return;
-      if (c.name === currentCourse.name) return;
-      if (!combined.find((x) => x.name === c.name)) combined.push(c);
-    });
-
-    return combined.slice(0, max);
-  };
-
-  if (!course) {
+  // Handle invalid course ID
+  if (courseId === null) {
     return (
       <PageTransition>
         <div className="min-h-screen bg-background">
           <Header />
           <div className="container mx-auto px-4 py-20 text-center">
             <h2 className="text-2xl font-display font-bold text-foreground mb-4">
-              Course not found
+              Invalid Course Link
             </h2>
             <p className="text-muted-foreground mb-6">
-              The course you are looking for does not exist.
+              The course link appears to be invalid. Please use a valid link or browse our courses.
             </p>
             <Link to="/courses">
               <Button className="bg-gradient-to-r from-primary to-pink-500">
-                Back to Courses
+                Browse Courses
               </Button>
             </Link>
           </div>
+          <Footer />
+        </div>
+      </PageTransition>
+    );
+  }
+
+  // Show skeleton while loading
+  if (!course) {
+    return (
+      <PageTransition>
+        <div className="min-h-screen bg-background">
+          <Header />
+          <main className="container mx-auto px-4 py-24">
+            <CourseDetailSkeleton />
+          </main>
           <Footer />
         </div>
       </PageTransition>
@@ -348,7 +469,7 @@ const ViewCourse = () => {
               <h3 className="font-display font-semibold text-lg mb-3">Tools</h3>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                 {course.tools.length > 0 ? (
-                  course.tools.map((t: any, i: number) => (
+                  course.tools.map((t: { type: string; img: JSX.Element }, i: number) => (
                     <div
                       key={i}
                       className="group relative animate-fade-in"
@@ -428,49 +549,11 @@ const ViewCourse = () => {
               </div>
             </div>
             {/* Recommended Courses Card */}
-            <div className="glass rounded-2xl p-6">
-              <h4 className="font-display font-semibold text-lg mb-3">
-                Recommended Courses
-              </h4>
-              <p className="text-sm text-muted-foreground mb-4">
-                Courses you may also like based on this program.
-              </p>
-              <div className="space-y-3">
-                {getRecommendations(course, 4).map((rec, idx) => {
-                  const recIndex = coursesList.findIndex(
-                    (c) => c.name === rec.name
-                  );
-                  return (
-                    <Link
-                      to={`/courses/${recIndex}`}
-                      key={idx}
-                      className="block"
-                    >
-                      <div className="flex items-center justify-between gap-3 p-3 rounded-lg hover:bg-secondary/40 transition-all">
-                        <div className="flex items-start gap-3">
-                          <div className="w-10 h-10 rounded-md bg-gradient-to-r from-primary to-pink-500 flex items-center justify-center text-white font-semibold text-sm shadow-sm">
-                            {rec.name
-                              .split(" ")
-                              .map((n) => n[0])
-                              .slice(0, 2)
-                              .join("")}
-                          </div>
-                          <div>
-                            <div className="text-sm font-medium text-foreground">
-                              {rec.name}
-                            </div>
-                            <div className="text-xs text-muted-foreground">
-                              {rec.type} • {rec.coursetype}
-                            </div>
-                          </div>
-                        </div>
-                        <div className="text-xs text-primary">View →</div>
-                      </div>
-                    </Link>
-                  );
-                })}
-              </div>
-            </div>
+            <RecommendedCourses
+              courseId={courseId}
+              courseType={course.type}
+              courseCourseType={course.coursetype}
+            />
           </aside>
         </div>
       </main>
@@ -579,4 +662,5 @@ const ViewCourse = () => {
   );
 };
 
-export default ViewCourse;
+export default memo(ViewCourse);
+ViewCourse.displayName = 'ViewCourse';

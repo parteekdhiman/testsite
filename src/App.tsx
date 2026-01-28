@@ -6,6 +6,8 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Suspense, lazy, memo } from "react";
 import Chatbot from "./components/Chatbot";
 import ScrollToTop from "./pages/ScrollToTop";
+import OneTimePopup from "./components/OneTimePopup";
+import ErrorBoundary from "./components/ErrorBoundary";
 // import LandingSnow from "./components/LandingSnow";
 
 // Lazy load pages for better code splitting
@@ -16,6 +18,7 @@ const Contact = lazy(() => import("./pages/Contact"));
 const ViewCourse = lazy(() => import("./pages/ViewCourse"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 const ApiTest = lazy(() => import("./pages/ApiTest"));
+const IFS = lazy(() => import("./pages/IFS"));
 
 // Loading fallback component
 const LoadingFallback = memo(() => (
@@ -27,6 +30,8 @@ const LoadingFallback = memo(() => (
   </div>
 ));
 
+LoadingFallback.displayName = 'LoadingFallback';
+
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
@@ -37,30 +42,37 @@ const queryClient = new QueryClient({
 });
 
 const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter
-        future={{ v7_startTransition: true, v7_relativeSplatPath: true }}
-      >
+  <ErrorBoundary>
+    <QueryClientProvider client={queryClient}>
+      <TooltipProvider>
+        <Toaster />
+        <Sonner />
+        <BrowserRouter
+          future={{ v7_startTransition: true, v7_relativeSplatPath: true }}
+        >
           <ScrollToTop />
-        {/* <LandingSnow /> */}
-        <Suspense fallback={<LoadingFallback />}>
-          <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/courses" element={<Courses />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/contact" element={<Contact />} />
-            <Route path="/courses/:id" element={<ViewCourse />} />
-            <Route path="/api-test" element={<ApiTest />} />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </Suspense>
-        <Chatbot />
-      </BrowserRouter>
-    </TooltipProvider>
-  </QueryClientProvider>
+          <OneTimePopup/>
+          {/* <LandingSnow /> */}
+          <Suspense fallback={<LoadingFallback />}>
+            <Routes>
+              <Route path="/" element={<Index />} />
+              <Route path="/courses" element={<Courses />} />
+              <Route path="/about" element={<About />} />
+              <Route path="/contact" element={<Contact />} />
+              {/* Slug-based routing: /courses/course-name-123 (slug is cosmetic, ID is source of truth) */}
+              <Route path="/courses/:slug" element={<ViewCourse />} />
+              {/* Legacy ID-only routing kept for backward compatibility */}
+              <Route path="/courses/:id" element={<ViewCourse />} />
+              <Route path="/api-test" element={<ApiTest />} />
+              <Route path="/ifs" element={<IFS />} />
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </Suspense>
+          <Chatbot />
+        </BrowserRouter>
+      </TooltipProvider>
+    </QueryClientProvider>
+  </ErrorBoundary>
 );
 
 export default memo(App);

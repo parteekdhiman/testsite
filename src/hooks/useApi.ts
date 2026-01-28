@@ -4,7 +4,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 /**
  * Custom hook for API calls with loading and error states
  */
-export const useApiCall = <TData = any, TVariables = any>(
+export const useApiCall = <TData = unknown, TVariables = unknown>(
   apiFunction: (variables: TVariables) => Promise<TData>,
   options?: {
     onSuccess?: (data: TData) => void;
@@ -74,8 +74,8 @@ export const useApiCall = <TData = any, TVariables = any>(
 /**
  * Hook for form submissions with API calls
  */
-export const useFormSubmission = <TData = any>(
-  apiFunction: (data: any) => Promise<TData>,
+export const useFormSubmission = <TData = unknown>(
+  apiFunction: (data: unknown) => Promise<TData>,
   options?: {
     successMessage?: string;
     errorMessage?: string;
@@ -87,7 +87,7 @@ export const useFormSubmission = <TData = any>(
   const [submitError, setSubmitError] = useState<Error | null>(null);
   const [submitSuccess, setSubmitSuccess] = useState(false);
 
-  const submit = useCallback(async (formData: any) => {
+  const submit = useCallback(async (formData: unknown) => {
     setIsSubmitting(true);
     setSubmitError(null);
     setSubmitSuccess(false);

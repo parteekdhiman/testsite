@@ -67,9 +67,8 @@ export default function NewIridescence({
     const renderer = new Renderer();
     const gl = renderer.gl;
     gl.clearColor(1, 1, 1, 1);
-
+    // eslint-disable-next-line prefer-const
     let program: Program;
-
     function resize() {
       const scale = 1;
       renderer.setSize(ctn.offsetWidth * scale, ctn.offsetHeight * scale);
@@ -85,7 +84,7 @@ export default function NewIridescence({
     resize();
 
     const geometry = new Triangle(gl);
-    program = new Program(gl, {
+    const program = new Program(gl, {
       vertex: vertexShader,
       fragment: fragmentShader,
       uniforms: {
