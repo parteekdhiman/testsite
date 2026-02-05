@@ -6,8 +6,9 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Suspense, lazy, memo } from "react";
 import Chatbot from "./components/Chatbot";
 import ScrollToTop from "./pages/ScrollToTop";
-import OneTimePopup from "./components/OneTimePopup";
+// Popup removed - Registration is now a dedicated page
 import ErrorBoundary from "./components/ErrorBoundary";
+import OneTimePopup from "./components/OneTimePopup";
 // import LandingSnow from "./components/LandingSnow";
 
 // Lazy load pages for better code splitting
@@ -19,6 +20,7 @@ const ViewCourse = lazy(() => import("./pages/ViewCourse"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 const ApiTest = lazy(() => import("./pages/ApiTest"));
 const IFS = lazy(() => import("./pages/IFS"));
+const Registration = lazy(() => import("./pages/Registration"));
 
 // Loading fallback component
 const LoadingFallback = memo(() => (
@@ -52,6 +54,7 @@ const App = () => (
         >
           <ScrollToTop />
           <OneTimePopup/>
+          {/* OneTimePopup removed - Registration is now at /register route */}
           {/* <LandingSnow /> */}
           <Suspense fallback={<LoadingFallback />}>
             <Routes>
@@ -65,6 +68,7 @@ const App = () => (
               <Route path="/courses/:id" element={<ViewCourse />} />
               <Route path="/api-test" element={<ApiTest />} />
               <Route path="/ifs" element={<IFS />} />
+              <Route path="/register" element={<Registration />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </Suspense>

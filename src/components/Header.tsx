@@ -11,6 +11,7 @@ const Header = () => {
     { name: "Courses", href: "/courses" },
     { name: "About", href: "/about" },
     { name: "NIFS", href: "/ifs" },
+    { name: "Job Fair", href: "/register" },
     { name: "Contact", href: "/contact" },
   ];
 
@@ -54,7 +55,7 @@ const Header = () => {
 
           <div className="hidden md:block">
             <Button className="bg-gradient-to-r from-primary to-pink-500 hover:opacity-90 glow-primary">
-              <Link to="/contact">Register Now</Link>
+              <Link to="/register">Register Now</Link>
             </Button>
           </div>
 
@@ -94,7 +95,7 @@ const Header = () => {
                 )
               ))}
               <Button className="mt-2 bg-gradient-to-r from-primary to-pink-500">
-                <Link to="/contact" onClick={() => setIsMenuOpen(false)}>Register Now</Link>
+                <Link to="/register" onClick={() => setIsMenuOpen(false)}>Register Now</Link>
               </Button>
             </div>
           </nav>
