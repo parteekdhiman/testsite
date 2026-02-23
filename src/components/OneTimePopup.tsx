@@ -35,7 +35,7 @@ const OneTimePopup: React.FC = () => {
         </button>
         <div className="text-center">
           <h3 className="text-2xl font-bold text-card-foreground mb-4">
-            Newus Job Fair 2024
+            Newus Job Fair 2026
           </h3>
           <img
             src={img}

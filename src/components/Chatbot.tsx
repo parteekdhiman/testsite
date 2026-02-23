@@ -181,7 +181,7 @@ const Chatbot = memo(() => {
       {!isOpen && (
         <button
           onClick={() => setIsOpen(true)}
-          className="fixed bottom-20 right-6 z-40 w-14 h-14 rounded-full bg-gradient-to-r from-primary to-pink-500 text-white flex items-center justify-center hover:scale-110 transition-transform"
+          className="fixed bottom-20 right-2 z-40 w-14 h-14 rounded-full bg-gradient-to-r from-primary to-pink-500 text-white flex items-center justify-center hover:scale-110 transition-transform"
           aria-label="Open chatbot"
         >
           <MessageCircle />
@@ -189,7 +189,7 @@ const Chatbot = memo(() => {
       )}
 
       {isOpen && (
-        <div className="fixed bottom-20 right-6 z-50 w-96 h-[600px] bg-background border rounded-lg flex flex-col shadow-lg">
+        <div className="fixed bottom-20 right-2 z-50 w-90 h-[600px] bg-background border rounded-lg flex flex-col shadow-lg">
           <div className="bg-gradient-to-r from-primary to-pink-500 text-white p-4 flex justify-between items-center">
             <h3 className="font-semibold">Course Assistant</h3>
             <button

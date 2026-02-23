@@ -11,7 +11,6 @@ const Header = () => {
     { name: "Courses", href: "/courses" },
     { name: "About", href: "/about" },
     { name: "NIFS", href: "/ifs" },
-    { name: "Job Fair", href: "/register" },
     { name: "Contact", href: "/contact" },
   ];
 
