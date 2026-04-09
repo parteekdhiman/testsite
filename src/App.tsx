@@ -8,7 +8,7 @@ import Chatbot from "./components/Chatbot";
 import ScrollToTop from "./pages/ScrollToTop";
 // Popup removed - Registration is now a dedicated page
 import ErrorBoundary from "./components/ErrorBoundary";
-// import OneTimePopup from "./components/OneTimePopup";
+import OneTimePopup from "./components/OneTimePopup";
 // import LandingSnow from "./components/LandingSnow";
 
 // Lazy load pages for better code splitting
@@ -53,7 +53,7 @@ const App = () => (
           future={{ v7_startTransition: true, v7_relativeSplatPath: true }}
         >
           <ScrollToTop />
-          {/* <OneTimePopup/> */}
+          <OneTimePopup/>
           {/* OneTimePopup removed - Registration is now at /register route */}
           {/* <LandingSnow /> */}
           <Suspense fallback={<LoadingFallback />}>

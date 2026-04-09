@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
-import img from "../assets/Newus_Job_Fiar_Banner.png"
+import img from "../assets/popup.png"
 
 const OneTimePopup: React.FC = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -34,9 +34,9 @@ const OneTimePopup: React.FC = () => {
           <X className="h-4 w-4" />
         </button>
         <div className="text-center">
-          <h3 className="text-2xl font-bold text-card-foreground mb-4">
+          {/* <h3 className="text-2xl font-bold text-card-foreground mb-4">
             Newus Job Fair 2026
-          </h3>
+          </h3> */}
           <img
             src={img}
             alt="Newus Job Fair banner"
@@ -44,7 +44,7 @@ const OneTimePopup: React.FC = () => {
           />
           <div className="flex gap-3 justify-center">
             <Button asChild className="w-full sm:w-auto bg-gradient-to-r from-primary to-pink-600 hover:opacity-90">
-              <Link to="/register" onClick={handleClose}>
+              <Link to="/contact" onClick={handleClose}>
                 Register Now
               </Link>
             </Button>
